@@ -1,12 +1,13 @@
 import os
 from selenium import webdriver
-# from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from tkinter import *
-# from PIL.ImageTk import PhotoImage, Image
+from PIL.ImageTk import PhotoImage, Image
 
 
-def parser():
+def parser(username, password):
+    login(username, password)
     with open('PupilPath.html', 'r') as html_file:
         soup = BeautifulSoup(html_file, 'html.parser')
         # table = soup.find('tbody')
@@ -15,7 +16,7 @@ def parser():
             grade_list.append(float(grade.contents[1].strip()))
 
 
-def parser_gui():
+def parser_gui(username, password):
 
     # Title Frame
     title_frame = Frame(root, bg='#4da6ff', bd=5)
@@ -29,12 +30,15 @@ def parser_gui():
     main_frame2.place(relx=0.0, rely=0.2, relwidth=1, relheight=1)
 
     welcome = Label(main_frame2, text='Welcome to PupilPath++', font=('Ariel', 20))
-    instruction = Label(main_frame2, text='To get your grades just click the button', font=('Ariel', 14))
+    instruction = Label(main_frame2, text='To get your grades just click the button', font=('Ariel', 8))
 
     welcome.place(relx=0.21, rely=0.03)
-    instruction.place(relx=0.21, rely=0.1)
-    button = Button(main_frame2, text='Parse Grades', highlightbackground='blue', command=parser)
-    button.place(relx=0.21, rely=0.5)
+    instruction.place(relx=0.21, rely=0.15)
+    button = Button(main_frame2, text='Parse Grades', highlightbackground='blue', command=lambda: parser(username, password))
+    button.place(relx=0.7, rely=0.15)
+    label = Label(main_frame2)
+    label.place(relx=0.050, rely=0.3, relwidth=0.9, relheight=0.45)
+
 
 # saves login info to a separate file from which it will read next time.
 def save_credentials(username, password):
@@ -44,20 +48,22 @@ def save_credentials(username, password):
 
 def login(username, password, checkbox):
     if checkbox:
-        save_credentials(username, password)
+        save_credentials(username.get(), password.get())
+    # Logs in
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver.get('https://pupilpath.skedula.com/')
+    driver.find_element_by_id('sign_in').click()
+    driver.find_element_by_id('user_username').send_keys(username)
+    driver.find_element_by_id('sign_in').click()
+    driver.find_element_by_id('user_password').send_keys(password)
+    driver.find_element_by_id('sign_in').click()
+    driver.find_element_by_class_name('ui-button-text').click()
+    with open('PupilPath.html', 'w') as file:
+        file.write(driver.page_source)
 
-    # driver = webdriver.Chrome(ChromeDriverManager().install())
-    # driver.get('https://pupilpath.skedula.com/')
-    # driver.find_element_by_id('sign_in').click()
-    # driver.find_element_by_id('user_username').send_keys(username)
-    # driver.find_element_by_id('sign_in').click()
-    # driver.find_element_by_id('user_password').send_keys(password)
-    # driver.find_element_by_id('sign_in').click()
-    # driver.find_element_by_class_name('ui-button-text').click()
-    # with open('PupilPath.html', 'w') as file:
-    #     file.write(driver.page_source)
+    # if not os.path.isfile('credentials.txt'):
     main_frame.destroy()
-    parser_gui()
+    parser_gui(username, password)
 
 
 def login_gui():
@@ -82,28 +88,22 @@ def login_gui():
     password_label.place(relx=0.21, rely=0.1, relwidth=0.131, relheight=0.05)
 
     # text fields for getting data
-    username_entry = Entry(main_frame)
-    # username_entry.insert(0, 'Erase this first..')
-    username_entry.place(relx=0.4, rely=0.03, relwidth=0.55, relheight=0.05)
+    username = StringVar()
+    username_entry = Entry(main_frame, textvariable=username)
+    username_entry.place(relx=0.4, rely=0.03, relwidth=0.7, relheight=0.05)
 
-    password_entry = Entry(main_frame, bg='White')
-    # password_entry.insert(0, 'Erase this first..')
+    password = StringVar()
+    password_entry = Entry(main_frame, textvariable=password)
     password_entry.place(relx=0.4, rely=0.1, relwidth=0.55, relheight=0.05)
 
-    username = username_entry.get()
-    password = password_entry.get()
-
-    # button to login
-    login_button = Button(main_frame, text='login', highlightbackground='blue', command=lambda: login(username, password, c))
-    login_button.place(relx=0.7, rely=0.2, relwidth=0.2, relheight=0.05)
-
     # save password checkbox
-    c = BooleanVar()
-    checkbox = Checkbutton(main_frame, text='Save password?', var=c)
-    checkbox.place(relx=0.6, rely=0.2, relwidth=0.05, relheight=0.05)
-    # Label for checkbox
-    label = Label(main_frame, text='Save password?')
-    label.place(relx=0.4, rely=0.2, relheight=0.05)
+    value = IntVar()
+    checkbox = Checkbutton(main_frame, text='Save password?', variable=value)
+    checkbox.place(relx=0.45, rely=0.2, relheight=0.049)
+    print(value.get())
+    # button to login
+    login_button = Button(main_frame, text='login', command=lambda: login(username, password, value))
+    login_button.place(relx=0.7, rely=0.2, relwidth=0.2, relheight=0.05)
 
 
 def main():
@@ -116,7 +116,11 @@ def main():
     if not os.path.isfile('credentials.txt'):
         login_gui()
     else:
-        parser_gui()
+        with open('credentials.txt', 'r') as f:
+            line = f.readline().strip('\n')
+            username = line.split(':')[0]
+            password = line.split(':')[1]
+        parser_gui(username, password)
 
 
     root.mainloop()
