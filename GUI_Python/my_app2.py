@@ -83,18 +83,21 @@ def login(username, password, checkbox=0):
 
 def login_gui():
     # Title Frame
-    title_frame = Frame(root, bg='#4da6ff', bd=5)
+    title_frame = Frame(root, bd=5)
     title_frame.place(relx=0, rely=0, relwidth=1, relheight=0.2)
-    img = PhotoImage(Image.open('back.png'))
-    background = Label(canvas, image=img)
-    label = Label(title_frame, text='PUPILPATH++', font=('Ariel', 20, 'bold'), fg='WHITE', bg='#d9b3ff')
+
+    label = Label(title_frame, text='PUPILPATH++', font=('Ariel', 20, 'bold'), fg='WHITE')
     label.place(relx=0.01, rely=0.05, relwidth=0.99, relheight=0.95, anchor='nw')
 
     # Working Frame
     global main_frame
 
-    main_frame = Frame(root, bg='#6666ff')
+    main_frame = Frame(root)
     main_frame.place(relx=0.0, rely=0.2, relwidth=1, relheight=1)
+
+    img = PhotoImage(Image.open('back.png'))
+    background = Label(main_frame, image=img)
+    background.place()
 
     # labels for text fields
     username_label = Label(main_frame, text='Username', fg='blue')
