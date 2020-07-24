@@ -83,46 +83,47 @@ def login(username, password, checkbox=0):
 
 def login_gui():
     # Title Frame
-    title_frame = Frame(root, bd=5)
-    title_frame.place(relx=0, rely=0, relwidth=1, relheight=0.2)
-
-    label = Label(title_frame, text='PUPILPATH++', font=('Ariel', 20, 'bold'), fg='WHITE')
-    label.place(relx=0.01, rely=0.05, relwidth=0.99, relheight=0.95, anchor='nw')
+    # title_frame = Frame(root, bd=5)
+    # title_frame.place(relx=0, rely=0, relwidth=1, relheight=0.2)
+    #
+    # label = Label(title_frame, text='PUPILPATH++', font=('Ariel', 20, 'bold'), fg='WHITE')
+    # label.place(relx=0.01, rely=0.05, relwidth=0.99, relheight=0.95, anchor='nw')
 
     # Working Frame
     global main_frame
 
     main_frame = Frame(root)
-    main_frame.place(relx=0.0, rely=0.2, relwidth=1, relheight=1)
+    main_frame.place(relwidth=1, relheight=1)
 
     img = PhotoImage(Image.open('back.png'))
     background = Label(main_frame, image=img)
-    background.place()
+    background.place(relwidth=1, relheight=1)
+    background.image = img
 
     # labels for text fields
-    username_label = Label(main_frame, text='Username', fg='blue')
-    password_label = Label(main_frame, text='Password', fg='blue')
-
-    username_label.place(relx=0.21, rely=0.03, relheight=0.05)
-    password_label.place(relx=0.21, rely=0.1, relwidth=0.131, relheight=0.05)
+    # username_label = Label(main_frame, text='Username', fg='blue', font=('Montreal', 7))
+    # password_label = Label(main_frame, text='Password', fg='blue')
+    #
+    # username_label.place(relx=0.21, rely=0.03, relheight=0.05)
+    # password_label.place(relx=0.21, rely=0.1, relwidth=0.131, relheight=0.05)
 
     # text fields for getting data
     username = StringVar()
     username_entry = Entry(main_frame, textvariable=username)
-    username_entry.place(relx=0.4, rely=0.03, relwidth=0.7, relheight=0.05)
+    username_entry.place(relx=0.4, rely=0.4899, relwidth=0.4, relheight=0.045)
 
     password = StringVar()
     password_entry = Entry(main_frame, textvariable=password)
-    password_entry.place(relx=0.4, rely=0.1, relwidth=0.55, relheight=0.05)
+    password_entry.place(relx=0.4, rely=0.5799, relwidth=0.4, relheight=0.045)
 
     # save password checkbox
     value = IntVar()
     checkbox = Checkbutton(main_frame, text='Save password?', variable=value)
-    checkbox.place(relx=0.45, rely=0.2, relheight=0.049)
+    checkbox.place(relx=0.45, rely=0.6799, relheight=0.049)
     print(value.get())
     # button to login
     login_button = Button(main_frame, text='login', command=lambda: login(username, password, value))
-    login_button.place(relx=0.7, rely=0.2, relwidth=0.2, relheight=0.05)
+    login_button.place(relx=0.65, rely=0.6799, relwidth=0.2, relheight=0.05)
 
 
 def main():
@@ -131,7 +132,10 @@ def main():
     grade_list = []
     root = Tk()
     root.title('PupilPath++')
-    canvas = Canvas(root, width=500, height=400)
+    # background_frame = Frame(root)
+    # background_frame.place(relwidth=1, relheight=1)
+
+    canvas = Canvas(root, width=700, height=500)
     canvas.pack()
 
     if not os.path.isfile('credentials.txt'):
