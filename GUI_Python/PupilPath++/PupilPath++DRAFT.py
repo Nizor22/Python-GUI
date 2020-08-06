@@ -85,8 +85,7 @@ def login_gui():
     # Title Frame
     title_frame = Frame(root, bg='#4da6ff', bd=5)
     title_frame.place(relx=0, rely=0, relwidth=1, relheight=0.2)
-    img = PhotoImage(Image.open('back.png'))
-    background = Label(canvas, image=img)
+
     label = Label(title_frame, text='PUPILPATH++', font=('Ariel', 20, 'bold'), fg='WHITE', bg='#d9b3ff')
     label.place(relx=0.01, rely=0.05, relwidth=0.99, relheight=0.95, anchor='nw')
 
