@@ -91,15 +91,15 @@ def parser_gui(username, password):
 	main_frame2.place(relwidth=1, relheight=1)
 
 	# Background
-	img = PhotoImage(Image.open(os.path.join(os.getcwd(), r'img\after_login_back.png')))
+	img = PhotoImage(Image.open(os.path.join(os.getcwd(), r'img/after_login_back.png')))
 	background = Label(main_frame2, image=img)
 	background.place(relwidth=1, relheight=1)
 	background.image = img
 
 	# Button img
-	grades_button_img = PhotoImage(Image.open(os.path.join(os.getcwd(), r'img\Grades_button.png')))
-	gpa_button_img = PhotoImage(Image.open(os.path.join(os.getcwd(), r'img\GPA_button.png')))
-	done_button_img = PhotoImage(Image.open(os.path.join(os.getcwd(), r'img\Done.png')))
+	grades_button_img = PhotoImage(Image.open(os.path.join(os.getcwd(), r'img/Grades_button.png')))
+	gpa_button_img = PhotoImage(Image.open(os.path.join(os.getcwd(), r'img/GPA_button.png')))
+	done_button_img = PhotoImage(Image.open(os.path.join(os.getcwd(), r'img/Done.png')))
 
 	# Buttons
 	grades_button = Button(main_frame2, image=grades_button_img, bg='#4a6eb5', bd=0,
@@ -134,7 +134,7 @@ def sign_in(username, password):
 	global driver
 	notifier = ToastNotifier()
 	notifier.show_toast('Please wait', 'Attempting a login..', duration=5,
-	                    icon_path=os.path.join(os.getcwd(), r'img\icon.ico'))
+	                    icon_path=os.path.join(os.getcwd(), r'img/icon.ico'))
 	try:
 		options = webdriver.ChromeOptions()
 		options.add_argument('--incognito')
@@ -158,7 +158,7 @@ def sign_in(username, password):
 		driver.execute_script("window.stop();")
 	except UnicodeEncodeError:
 		notifier.show_toast('Error', 'Delete PupilPath.html and restart the app', duration=10,
-		                    icon_path=os.path.join(os.getcwd(), r'img\icon.ico'))
+		                    icon_path=os.path.join(os.getcwd(), r'img/icon.ico'))
 
 
 # Creates and starts threads for save_credentials and sign_in function.
@@ -184,7 +184,7 @@ def login_gui():
 	main_frame.place(relwidth=1, relheight=1)
 
 	# Background
-	img = PhotoImage(Image.open(os.path.join(os.getcwd(), r'img\back.png')))
+	img = PhotoImage(Image.open(os.path.join(os.getcwd(), r'img/back.png')))
 	background = Label(main_frame, image=img)
 	background.place(relwidth=1, relheight=1)
 	background.image = img
@@ -217,7 +217,7 @@ def main():
 	root = Tk()
 	root.title('PupilPath++')
 	root.resizable(False, False)
-	icon = PhotoImage(file='./img/icon medium.ico')
+	icon = PhotoImage(file='img/icon medium.ico')
 	root.tk.call('wm', 'iconphoto', root._w, icon)
 
 	canvas = Canvas(root, width=700, height=500)
